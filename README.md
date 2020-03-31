@@ -9,11 +9,11 @@ The Corpus is unavailable, therefore index creation is unavailable. However, the
 ### Implementation
 Search Engine
 
--tf-idf scoring
--cosine similarity
--duplication detection
--inverted index creation
--threading
--word stemming
--gui interface
--response time mostly < 300ms with short queries
+- tf-idf scoring
+- cosine similarity
+- duplication detection
+- inverted index creation
+- threading
+- word stemming
+- gui interface
+- response time mostly < 300ms with short queries
