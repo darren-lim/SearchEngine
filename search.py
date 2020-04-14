@@ -83,9 +83,6 @@ class search:
             td_dict_list.append(token_document_dict)
             query_vector.append(math.log(N / df))
 
-           # print("\n*******  ", q[0], "appears in ", df, "documents\n")
-        #print(td_dict_list)
-
         return td_dict_list, query_vector
 
 
@@ -123,49 +120,22 @@ class search:
 
     def makeDocumentVector(self, td_dict_list):
         total_dict = td_dict_list[0]
-        #td_dictlen_list = [0 for _ in range(len(td_dict_list)-1)]
+
         for key, value in total_dict.items():
             total_dict[key].extend([0 for _ in range(len(td_dict_list)-1)])
-            #for i in range(len(td_dict_list) - 1):
-            #    total_dict[key].append(0)
-        #print(total_dict)
+
         k = 1
-        #print("leng dict list", len(td_dict_list))
 
-        #td_dictlen_list = [0 for _ in range(len(td_dict_list))]
-        #print(total_dict)
         th_list = []
-        #for d in td_dict_list:
-
-        while k<len(td_dict_list):
-            thread = threading.Thread(target=self.add_vectors_to_td_list, args=(total_dict, td_dict_list[k], k, len(td_dict_list)))
-            th_list.append(thread)
-            k+=1
-        for thread in th_list:
-            thread.start()
-        for thread in th_list:
-            thread.join()
-        #thread_list.clear()
-
-        '''
-        add_vectors_to_td_list(total_dict, td_dict_list)
         while k < len(td_dict_list):
-            #print("k = ", k)
-            for key, value in td_dict_list[k].items():
-                if key in total_dict:
-                    total_dict[key][k] = int(value[0])
-                else:
-                    total_dict[key] = [0 for _ in range(len(td_dict_list))]
-                    # total_dict[key] = []
-                    # for i in range(len(td_dict_list)):
-                    #    total_dict[key].append(0)
-    
-                    total_dict[key][k] = int(value[0])
-    
-                    # print(len(value))
+            threads = threading.Thread(target=self.add_vectors_to_td_list, args=(total_dict, td_dict_list[k], k, len(td_dict_list)))
+            th_list.append(threads)
             k += 1
-        '''
-        #print(total_dict)
+        for threads in th_list:
+            threads.start()
+        for threads in th_list:
+            threads.join()
+
         return total_dict
 
 
@@ -175,10 +145,6 @@ class search:
                 t_dict[key][ind_k] = int(value[0])
             else:
                 t_dict[key] = [0 for _ in range(total_len)]
-                # total_dict[key] = []
-                # for i in range(len(td_dict_list)):
-                #    total_dict[key].append(0)
-
                 t_dict[key][ind_k] = int(value[0])
 
 
@@ -201,38 +167,15 @@ class search:
 
 
     def findURL(self, docIDResults, URLFile):
-        #print("in find URL")
-        # read_file = open(URLFile, "r")
-        # dictionary = json.loads(read_file)
-        # read_file.close()
         URL = []
-        #start = time.time()
-        #dictionaryList = dictionary.split()
 
         for id in docIDResults:
             URL.append(URLFile[id])
-            #URL.append(dictionaryList[int(d) * 2 + 1])
-
-        #print("End find URL", time.time() - start, "\n")
         return URL
 
 
     def add_dups(self, docIDList):
         merged_list = set.intersection(*docIDList)
-        '''
-        setlist_ind = 1
-        merged_list = set()
-        while setlist_ind < len(docIDList):
-            if len(merged_list) == 0:
-                merged_list = docIDList[setlist_ind - 1].intersection(docIDList[setlist_ind])
-                setlist_ind += 1
-            else:
-                merged_list = merged_list.intersection(docIDList[setlist_ind])
-                setlist_ind += 1
-    
-        if len(merged_list) == 0:
-            merged_list = docIDList[0]
-        '''
         return merged_list
 
 
@@ -244,7 +187,7 @@ class search:
 
     def calculate_tfidf_cosine(self, word_posting_list):
         tf_idf_thing = self.tf_idf(word_posting_list)
-        td_dict_list = self.tf_idf_thing[0]
+        td_dict_list = tf_idf_thing[0]
         query_vector = self.normalize(tf_idf_thing[1])
         d_vector_dict = self.makeDocumentVector(td_dict_list)
         for id, doc_vector in d_vector_dict.items():
@@ -255,8 +198,6 @@ class search:
 
 
     def final_search_file(self, bookkeeping, finalMerge, word, queue) -> tuple:
-        #startTime = time.time()
-        #print("in final search")
 
         #lock.acquire()
         with open(finalMerge, "r") as final_marg:
@@ -273,18 +214,13 @@ class search:
             final_marg.seek(start)
             count = start
             sizeWord = len(word)
-            #documents = []
-            #keyList = []
-            #documentIDList = []
 
             while count < end:
                 line = final_marg.readline()
                 if line == "":
                     break
 
-                #print(line)
                 if line[:sizeWord] == word:
-                    #print(line.split())
                     word_line = line.split()
                     ind = 1
                     doc_set = set()
@@ -308,9 +244,10 @@ class search:
 if __name__ == "__main__":
     print("Enter nothing to quit")
     searcher = search()
-    book = searcher.create_bookeeper("./FileOutput/bookkeeping(1).txt")
+    book = searcher.create_bookeeper("./FileOutput/bookkeeping.txt")
     url_file = searcher.load_urls("./FileOutput/urls.txt")
     N = len(url_file)
+    print(N)
 
     while(True):
         query = input("search query : ")
@@ -325,7 +262,7 @@ if __name__ == "__main__":
         que = queue.Queue()
         thread_list = []
         for word in qList:
-            thread = threading.Thread(target=searcher.final_search_file, args=(book, "./FileOutput/finalmerged(1).txt",word,que))
+            thread = threading.Thread(target=searcher.final_search_file, args=(book, "./FileOutput/finalmerged.txt",word,que))
             thread_list.append(thread)
         for thread in thread_list:
             thread.start()
@@ -338,11 +275,8 @@ if __name__ == "__main__":
         query_doc_setlist = []
         while not que.empty():
             posting = que.get()
-            #print("posting: ",posting)
-            #print(posting)
             query_word_posting.append(posting[0])
             query_doc_setlist.append(posting[1])
-           # query_doc_setlist = intersect_sets(query_doc_setlist,posting[1])
 
         if len(query_word_posting) == 0:
             print("No valid tokens, please try again")
@@ -350,12 +284,13 @@ if __name__ == "__main__":
 
         merged_doc_set = searcher.add_dups(query_doc_setlist)
         cosine_vector = searcher.calculate_tfidf_cosine(query_word_posting)
-        #print(len(query_word_posting))
         cosine_vector_keys = set(int(i) for i in cosine_vector.keys())
         final_doc_set = merged_doc_set.intersection(cosine_vector_keys)
         new_cos_vector = dict()
+
         for id in final_doc_set:
             new_cos_vector[id] = cosine_vector[str(id)]
+
         d = searcher.sort_my_dict(new_cos_vector, 5)
         URL = searcher.findURL(d, url_file)
         endtime = time.time() - starttime

@@ -181,9 +181,6 @@ def makeBookkeeping(finalMerge, bk):
                 bookKeeping.write(str(count) + " ")
                 break
 
-
-            #print(character)
-
             if (line.split()[0][2] != character):
                 newCharacter = True
             else:
@@ -217,7 +214,6 @@ def merge(file1, file2, writefile):
                         break_file = 0
                         if len(l2) != 0:
                             mergeFile.write(str(l2[0]) + "\n")
-                            #merged_list.append(l2[0])
                         break
                     l1.append(eval(line_f1.strip()))
                 if len(l2) == 0:
@@ -227,26 +223,18 @@ def merge(file1, file2, writefile):
                         break_file = 1
                         if len(l1) != 0:
                             mergeFile.write(str(l1[0]) + "\n")
-                            #merged_list.append(l1[0])
                         break
                     l2.append(eval(line_f2.strip()))
 
-                #print(len(l1))
-                #print(len(l2))
-
                 if list(l1[0].keys())[0] == list(l2[0].keys())[0]:
                     l1[0][next(iter(l1[0]))].update(l2[0][next(iter(l2[0]))])
-                    #merged_list.append(l1[0])
                     mergeFile.write(str(l1[0]) + "\n")
-                    #print(l1[0].update(l2[0]))
                     l1.pop(0)
                     l2.pop(0)
                 elif list(l1[0].keys())[0] < list(l2[0].keys())[0]:
-                    #merged_list.append(l1[0])
                     mergeFile.write(str(l1[0]) + "\n")
                     l1.pop(0)
                 elif list(l1[0].keys())[0] > list(l2[0].keys())[0]:
-                    #merged_list.append(l2[0])
                     mergeFile.write(str(l2[0]) + "\n")
                     l2.pop(0)
             if break_file == 0:
@@ -254,28 +242,19 @@ def merge(file1, file2, writefile):
                     line_f2 = f2.readline()
                     if line_f2 == "":
                         break
-                    #merged_list.append((eval(line_f2.strip())))
-                    #print("write f2")
                     mergeFile.write(str(eval(line_f2.strip())) + "\n")
             elif break_file == 1:
                 while True:
                     line_f1 = f1.readline()
                     if line_f1 == "":
                         break
-                    #merged_list.append((eval(line_f1.strip())))
-                    #print("write f1")
                     mergeFile.write(str(eval(line_f1.strip())) + "\n")
             f1.close()
             f2.close()
-            #print(len(merged_list))
-            #for i in merged_list:
-            #    print(i)
-            #    mergeFile.write(str(i) + "\n")
         except EOFError:
             print("end of file")
             f1.close()
             f2.close()
-            #pass
 
             
 def tokenizer(text : "str") -> list:
@@ -290,9 +269,6 @@ def run_indexer(exact_list, near_dup_list):
 
     merge("./FileOutput/dict1.txt", "./FileOutput/dict2.txt", "./FileOutput/mergedict.txt")
     merge("./FileOutput/mergedict.txt", "./FileOutput/dict3.txt", "./FileOutput/finalmerged.txt")
-    #merge("./FileOutput/mergedict1.txt", "./FileOutput/dict4.txt", "./FileOutput/mergedict2.txt")
-    #merge("./FileOutput/mergedict2.txt", "./FileOutput/dict5.txt", "./FileOutput/mergedict3.txt")
-    #merge("./FileOutput/mergedict3.txt", "./FileOutput/dict6.txt", "./FileOutput/finalmerged.txt")
 
     makeBookkeeping("./FileOutput/finalmerged.txt", "./FileOutput/bookkeeping.txt")
     print("finished indexer")
@@ -303,25 +279,6 @@ if __name__ == "__main__":
     #indexer.indexer_main()
     makeBookkeeping("./FileOutput/finalmerged.txt", "./FileOutput/bookkeeping.txt")
 
-    #merge("./FileOutput/dict1.txt", "./FileOutput/dict2.txt", "./FileOutput/mergedict.txt")
-    #merge("./FileOutput/mergedict.txt", "./FileOutput/dict3.txt", "./FileOutput/mergedict1.txt")
-    #merge("./FileOutput/mergedict1.txt", "./FileOutput/dict4.txt", "./FileOutput/mergedict2.txt")
-    #merge("./FileOutput/mergedict2.txt", "./FileOutput/dict5.txt", "./FileOutput/mergedict3.txt")
-    #merge("./FileOutput/mergedict3.txt", "./FileOutput/dict6.txt", "./FileOutput/finalmerged.txt")
-    '''
-    count = 78385471
-    final_marg = open("./FileOutput/finalmerged.txt", "r")
-    end = 89921610
-    final_marg.seek(count)
-    while count < end:
-        line = final_marg.readline()
-        if line == "":
-            break
-
-        print(line)
-        count += len(line)
-    final_marg.close()
-    '''
 
 
 
