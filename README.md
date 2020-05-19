@@ -19,3 +19,6 @@ Search Engine
 - word stemming
 - gui interface
 - response time mostly < 300ms with short queries
+  
+  
+![searchEngineIMG](https://github.com/dartren01/SearchEngine/blob/master/SearchEngineIMG.PNG)
