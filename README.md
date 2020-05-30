@@ -7,9 +7,10 @@ Basic indexing documentation and search engine implementation as a class project
 
 ### How To Run
 On repl.it:  
-[![Run on Repl.it](https://repl.it/badge/github/dartren01/SearchEngine)](https://repl.it/github/dartren01/SearchEngine)
-
-The Corpus is unavailable, therefore index creation is unavailable. However, the search engine is runnable. Pull the repo, and run the gui.py file to run the search engine.
+[![Run on Repl.it](https://repl.it/badge/github/dartren01/SearchEngine)](https://repl.it/github/dartren01/SearchEngine)  
+Click the badge, wait until the repo is cloned, then click run at the top to run the program.  
+  
+Or clone the repo and run gui.py  
 
 ### Implementation
 Search Engine
