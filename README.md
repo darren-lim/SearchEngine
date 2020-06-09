@@ -9,8 +9,6 @@ Basic indexing documentation and search engine implementation as a class project
 On repl.it:  
 [![Run on Repl.it](https://repl.it/badge/github/dartren01/SearchEngine)](https://repl.it/github/dartren01/SearchEngine)  
 Click the badge, wait until the repo is cloned, then click run at the top to run the program.  
-  
-Or clone the repo and run gui.py  
 
 ### Implementation
 Search Engine
