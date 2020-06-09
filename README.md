@@ -23,4 +23,4 @@ Search Engine
 - response time mostly < 300ms with short queries
   
   
-![searchEngineIMG](https://github.com/dartren01/SearchEngine/blob/master/SearchEngineIMG.PNG)
+![searchEngineDemo](https://github.com/dartren01/SearchEngine/blob/master/searchEngineDemo.gif)
